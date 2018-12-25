@@ -1,17 +1,8 @@
+const Base = require('./base.js');
 const ProjectRep = think.service('projectRep');
-module.exports = class extends think.Logic {
+
+module.exports = class extends Base {
   async addAction() {
-    let rules = {
-      name: {
-        string: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-        length: {max: 20}, //长度不能大于2
-      },
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1001 , 'name 不能为空');
-    }
     let createdAt = this.getDate();
     let name = this.post('name');
     const param = {
@@ -38,37 +29,12 @@ module.exports = class extends think.Logic {
     return this.success(list);
   }
   async getInfoAction() {
-    let rules = {
-      id: {
-        int: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1001 , 'id 不能为空');
-    }
     let id = this.get('id')
 
     let result = await ProjectRep.getInfo(id);
     return this.success(result);
   }
   async updateAction() {
-    let rules = {
-      id: {
-        int: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
-      name: {
-        string: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-        length: {max: 20}, //长度不能大于2
-      },
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1001 , '参数错误');
-    }
     let name = this.post('name');
     let id = this.post('id');
     const param = {

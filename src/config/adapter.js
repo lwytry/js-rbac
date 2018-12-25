@@ -1,4 +1,5 @@
 const fileCache = require('think-cache-file');
+const redisCache = require('think-cache-redis');
 const nunjucks = require('think-view-nunjucks');
 const fileSession = require('think-session-file');
 const mysql = require('think-model-mysql');
@@ -20,9 +21,14 @@ exports.cache = {
     cachePath: path.join(think.ROOT_PATH, 'runtime/cache'), // absoulte path is necessarily required
     pathDepth: 1,
     gcInterval: 24 * 60 * 60 * 1000 // gc interval
+  },
+  redis: {
+    handle: redisCache,
+    port: 6379,
+    host: '121.42.227.165',
+    password: 'ZvZg2R8L8rbg9y'
   }
 };
-
 /**
  * model adapter config
  * @type {Object}

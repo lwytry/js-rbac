@@ -25,12 +25,11 @@ module.exports = class extends think.Service {
       page: param.page,
       num: param.num,
     }
-    let where = {
-      'permission_role.deleted': ['!=', 1],
-      userId: 0,
-    }
+    let where = {}
+    where['permission_role.deleted'] = ['!=', 1];
+    where['permission_role.userId'] = 0;
     if (!think.isEmpty(param.name)) {
-      where.name = ['like', '%' + param.name +'%'];
+      where['permission_role.name'] = ['like', '%' + param.name +'%'];
     }
     if (!think.isEmpty(param.projectId)) {
       where.projectId = param.projectId;
@@ -43,20 +42,21 @@ module.exports = class extends think.Service {
     return info;
   }
   async update(param) {
-    let id = param.id
-    let name = param.name
+    let id = param.id;
+    let name = param.name;
+    let description = param.description;
     const where = {
       id: id,
     }
+
     let info = await model.where(where).find();
     if (think.isEmpty(info)) {
       return 0;
     }
-    if (info.name == name) {
-      return 0;
-    }
+
     const data = {
       name: name,
+      description: description,
     }
     let ret = await model.where({id: id}).update(data);
     return ret;
@@ -92,20 +92,21 @@ module.exports = class extends think.Service {
   }
 
   // 获取角色相关资源
-  async getRoleSource(roleIds) {
+  async getRoleSource(param) {
     let ret = await model.query(`SELECT
     	DISTINCT b.resourceId,
     	c.id,
     	c.pId,
-    	c.requestId,
-    	c.name
+    	c.label
     FROM
     	permission_role AS a
     	LEFT JOIN permission_role_resource AS b ON a.id = b.roleId
     	LEFT JOIN permission_resource AS c ON c.id = b.resourceId 
     WHERE
-    	a.id IN ( ` + roleIds + ` )`);
-
+    	a.id IN ( ` + param.roleIds + ` ) and c.id is NOT NULL`);
+    if (think.isEmpty(param.isTree)) {
+      return ret;
+    }
     return this.getTree(ret,0);
   }
 
@@ -114,7 +115,7 @@ module.exports = class extends think.Service {
     for(let index in listArray){
       if (id == listArray[index].pId){
         subSrray.push(listArray[index]);
-        listArray[index].child = this.getTree(listArray,listArray[index].id);
+        listArray[index].children = this.getTree(listArray,listArray[index].id);
       }
     }
     return subSrray;

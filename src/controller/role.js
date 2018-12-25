@@ -1,29 +1,8 @@
+const Base = require('./base.js');
 const roleRep = think.service('roleRep');
 
-module.exports = class extends think.Logic {
+module.exports = class extends Base {
   async addAction() {
-    let rules = {
-      name: {
-        string: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-        trim: true,         // 去除空格
-        length: {max: 20}, //长度不能大于20
-      },
-      projectId: {
-        int: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
-      description: {
-        string: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-        trim: true,         // 去除空格
-        length: {max: 30}, //长度不能大于20
-      },
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1001 , this.validateErrors);
-    }
     let createdAt = this.getDate();
     const param = {
       name: this.post('name'),
@@ -34,7 +13,7 @@ module.exports = class extends think.Logic {
     }
     let result = await roleRep.craete(param);
     if (result == 0) {
-      return this.fail(1, "名称不能重复")
+      return this.fail(2, "名称不能重复")
     }
     return this.success(result);
   }
@@ -52,47 +31,19 @@ module.exports = class extends think.Logic {
     return this.success(list);
   }
   async getInfoAction() {
-    let rules = {
-      id: {
-        int: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1 , 'id 不能为空');
-    }
     let id = this.get('id')
 
     let result = await roleRep.getInfo(id);
     return this.success(result);
   }
   async updateAction() {
-    let rules = {
-      id: {
-        int: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
-      name: {
-        string: true,       // 字段类型为 String 类型
-        trim: true,         // 去除空格
-        length: {max: 10}, //长度不能大于20
-      },
-      description: {
-        string: true,       // 字段类型为 String 类型
-        trim: true,         // 去除空格
-        length: {max: 20}, //长度不能大于20
-      },
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1 , this.validateErrors);
-    }
     let name = this.post('name');
     let id = this.post('id');
+    let description = this.post('description');
     const param = {
       id: id,
-      name: name
+      name: name,
+      description: description,
     }
     let result = await roleRep.update(param);
     if (result == 0) {
@@ -129,23 +80,8 @@ module.exports = class extends think.Logic {
   }
 
   // 为角色分配资源
-  async setRoleSourceAction() {
-    let rules = {
-      roleId: {
-        int: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
-      resourceIds: {
-        string: true,       // 字段类型为 String 类型
-        trim: true,
-      }
-    }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1 , this.validateErrors);
-    }
-    let str = this.post('projectIds');
-    let resourceIds = str.split(',');
+  async setSourceAction() {
+    let resourceIds = JSON.parse(this.post('resourceIds'));
     let roleId = this.post('roleId');
     const param = {
       roleId: roleId,
@@ -159,25 +95,16 @@ module.exports = class extends think.Logic {
   }
 
   // 获取角色所有资源
-  async getRoleSourceAction() {
-    let rules = {
-      roleIds: {
-        string: true,       // 字段类型为 String 类型
-        trim: true,
-        required: true,
-      }
+  async getSourceAction() {
+    let param = {
+      roleIds: this.get('roleIds'),
+      isTree: this.get('isTree')
     }
-    let flag = this.validate(rules);
-    if(!flag){
-      return this.fail(1 , this.validateErrors);
+    let result = await roleRep.getRoleSource(param);
+    if (result == 0 && (!typeof result == 'object')) {
+      return this.fail(2, "获取失败")
     }
-    let roleIds = this.get('roleIds');
-
-    let result = await roleRep.getRoleSource(roleIds);
-    if (result == 0) {
-      return this.fail(2, "添加失败")
-    }
-    return this.success(result)
+    return this.success(result);
   }
 
 };

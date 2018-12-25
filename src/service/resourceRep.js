@@ -5,7 +5,7 @@ module.exports = class extends think.Service {
   async craete(param) {
     while (true) {
       var requestId = uuidv1();
-      let info = await model.where({requestId: requestId}).find();
+      let info = await model.where({requestId: requestId, projectId: param.projectId}).find();
       if (think.isEmpty(info)) {
         break;
       }
@@ -38,17 +38,16 @@ module.exports = class extends think.Service {
       page: param.page,
       num: param.num,
     }
-    let where = {
-      'permission_resource.deleted': ['!=', 1],
-    }
+    let where = {}
+    where['permission_resource.deleted'] = ['!=', 1];
     if (!think.isEmpty(param.name)) {
-      where.name = ['like', '%' + param.name +'%'];
+      where['permission_resource.name'] = ['like', '%' + param.name +'%'];
     }
     if (!think.isEmpty(param.label)) {
-      where.label = param.label;
+      where['permission_resource.label'] = param.label;
     }
-    if (!think.isEmpty(param.label)) {
-      where.projectId = param.projectId;
+    if (!think.isEmpty(param.projectId)) {
+      where['permission_resource.projectId'] = param.projectId;
     }
     let data = await model.join('permission_project ON permission_project.id = permission_resource.projectId').where(where).field(
       'permission_resource.id,' +
@@ -82,7 +81,6 @@ module.exports = class extends think.Service {
       display: param.display,
     }
     let where = {
-      projectId: param.projectId,
       label: param.label,
     }
     if (!think.isEmpty(param.pId)) {
@@ -138,9 +136,9 @@ module.exports = class extends think.Service {
           status: 1,
           pId: result[index].id,
         }).field('id, pId, label, sort').order('sort asc, id asc').select();
-        result[index].child = ret;
-        if (!think.isEmpty(result)) {
-          getChild(result[index].child)
+        result[index].children = ret;
+        if (!think.isEmpty(ret)) {
+          result[index].children = await getChild(result[index].children)
         }
       }
       return result;
