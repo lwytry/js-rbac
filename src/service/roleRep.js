@@ -70,9 +70,9 @@ module.exports = class extends think.Service {
     let where = {
       id: param.id,
     }
-    if (!think.isEmpty(param.userId)) {
-      where.userId = param.userId;
-    }
+    // if (!think.isEmpty(param.userId)) {
+    //   where.userId = param.userId;
+    // }
     let info = await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').find();
     return info;
   }
