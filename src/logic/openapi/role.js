@@ -1,7 +1,7 @@
 module.exports = class extends think.Logic {
   __before() {
   }
-  getRoleSourceAction() {
+  getSourceAction() {
     let rules = {
       projectRequestId: {
         string: true,       // 字段类型为 String 类型
@@ -22,7 +22,7 @@ module.exports = class extends think.Logic {
     }
   }
 
-  setRoleSourceAction() {
+  setSourceAction() {
     let rules = {
       projectRequestId: {
         string: true,       // 字段类型为 String 类型
