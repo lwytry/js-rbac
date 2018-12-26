@@ -17,12 +17,12 @@ module.exports = class extends think.Controller {
 
     if (think.isEmpty(projectId)) {
       const ProjectRep = think.service('projectRep');
-      let result = await ProjectRep.getInfoByRequestId(requestId);
+      let result = await ProjectRep.getInfoByRequestId(projectRequestId);
       if (think.isEmpty(result.id)) {
         return this.fail(2, 'projectID error');
       }
       projectId = result.id;
-      await this.cache(requestId, result.id, {
+      await this.cache(projectRequestId, result.id, {
         type: 'redis',
         redis: {
           timeout: 24 * 60 * 60 * 1000

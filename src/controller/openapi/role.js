@@ -62,7 +62,7 @@ module.exports = class extends Base {
       name: this.get('name'),
       projectId: projectId,
     }
-    let list = await roleRep.getList(param);
+    let list = await roleRep.getListByUserId(param);
     return this.success(list);
   }
 

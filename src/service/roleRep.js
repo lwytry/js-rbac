@@ -35,13 +35,31 @@ module.exports = class extends think.Service {
     let where = {}
     where['permission_role.deleted'] = ['!=', 1];
     where['permission_role.userId'] = 0;
+
     if (!think.isEmpty(param.name)) {
       where['permission_role.name'] = ['like', '%' + param.name +'%'];
     }
     if (!think.isEmpty(param.projectId)) {
-      where.projectId = param.projectId;
+      where['permission_role.projectId'] = param.projectId;
     }
     let data =  await model.join('permission_project ON permission_project.id = permission_role.projectId').where(where).field('permission_role.*,permission_project.name as pName').order('id DESC').page(page).countSelect();
+    return data;
+  }
+  async getListByUserId(param) {
+    let model = think.model('role');
+    const page = {
+      page: param.page,
+      num: param.num,
+    }
+    let where = 'deleted != 1';
+    where = where + ' and projectId=' + param.projectId;
+
+    if (!think.isEmpty(param.userId)) {
+      where = where + ' and (userId = 0 OR userId = ' + param.userId + ')';
+    } else {
+      where = where + ' and userId=0';
+    }
+    let data =  await model.where(where).order('id DESC').page(page).countSelect();
     return data;
   }
   async getInfo(id) {
