@@ -77,7 +77,12 @@ module.exports = class extends think.Service {
     const where = {
       id: id,
     }
-
+    if (!think.isEmpty(param.userId)) {
+      where.userId = param.userId;
+    }
+    if (!think.isEmpty(param.name)) {
+      where.name = param.name;
+    }
     let info = await model.where(where).find();
     if (think.isEmpty(info)) {
       return 0;
@@ -90,12 +95,24 @@ module.exports = class extends think.Service {
     let ret = await model.where({id: id}).update(data);
     return ret;
   }
-  async disable(id) {
-    let info = await model.where({id: id}).update({status: 0});
+  async disable(param) {
+    let where = {
+      id: param.id,
+    }
+    if (!think.isEmpty(param.userId)) {
+      where.userId = param.userId;
+    }
+    let info = await model.where(where).update({status: 0});
     return info;
   }
-  async enable(id) {
-    let info = await model.where({id: id}).update({status: 1});
+  async enable(param) {
+    let where = {
+      id: param.id,
+    }
+    if (!think.isEmpty(param.userId)) {
+      where.userId = param.userId;
+    }
+    let info = await model.where(where).update({status: 1});
     return info;
   }
 

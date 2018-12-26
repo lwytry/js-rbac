@@ -88,4 +88,71 @@ module.exports = class extends think.Logic {
       return this.fail(1 , this.validateErrors);
     }
   }
+  updateAction() {
+    let rules = {
+      id: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      userId: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      projectRequestId: {
+        string: true,       // 字段类型为 String 类型
+        required: true,     // 字段必填
+      },
+      name: {
+        string: true,       // 字段类型为 String 类型
+      },
+      description: {
+        string: true,       // 字段类型为 String 类型
+      },
+    }
+    let flag = this.validate(rules);
+    if(!flag){
+      return this.fail(1 , this.validateErrors);
+    }
+  }
+
+  disableAction() {
+    let rules = {
+      id: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      userId: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      projectRequestId: {
+        string: true,       // 字段类型为 String 类型
+        required: true,     // 字段必填
+      }
+    }
+    let flag = this.validate(rules);
+    if(!flag){
+      return this.fail(1 , this.validateErrors);
+    }
+  }
+  enableAction() {
+    let rules = {
+      id: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      userId: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      projectRequestId: {
+        string: true,       // 字段类型为 String 类型
+        required: true,     // 字段必填
+      }
+    }
+    let flag = this.validate(rules);
+    if(!flag){
+      return this.fail(1 , this.validateErrors);
+    }
+  }
 }

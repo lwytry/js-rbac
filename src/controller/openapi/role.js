@@ -66,4 +66,51 @@ module.exports = class extends Base {
     return this.success(list);
   }
 
+  async updateAction() {
+    let name = this.post('name');
+    let id = this.post('id');
+    let userId = this.post('userId');
+    let description = this.post('description');
+    const param = {
+      id: id,
+      name: name,
+      userId: userId,
+      description: description,
+    }
+    let result = await roleRep.update(param);
+    if (result == 0) {
+      return this.fail(2, "名称不能重复或资源不存在")
+    }
+    return this.success(result)
+  }
+
+  async disableAction() {
+    let id = this.post('id')
+    let userId = this.post('userId');
+
+    if (think.isEmpty(id) || think.isEmpty(userId)) {
+      return this.fail(1, 'invalid param');
+    }
+    let param = {
+      userId: userId,
+      id: id,
+    }
+    let result = await roleRep.disable(param);
+    return this.success(result);
+  }
+  async enableAction() {
+    let id = this.post('id')
+    let userId = this.post('userId');
+
+    if (think.isEmpty(id) || think.isEmpty(userId)) {
+      return this.fail(1, 'invalid param');
+    }
+    let param = {
+      userId: userId,
+      id: id,
+    }
+    let result = await roleRep.enable(param);
+    return this.success(result);
+  }
+
 };
