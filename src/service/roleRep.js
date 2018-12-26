@@ -5,6 +5,9 @@ module.exports = class extends think.Service {
       projectId: param.projectId,
       name: param.name
     }
+    if (!think.isEmpty(param.userId)) {
+      where.userId = param.userId;
+    }
     let info = await model.where(where).find();
     if (!think.isEmpty(info)) {
       return 0;
