@@ -84,13 +84,21 @@ module.exports = class extends Base {
     return this.success(result)
   }
 
+  async getInfoAction() {
+    let id = this.get('id')
+    let userId = this.get('userId');
+    let param = {
+      userId: userId,
+      id: id,
+    }
+    let result = await roleRep.getInfo(param);
+    return this.success(result);
+  }
+
   async disableAction() {
     let id = this.post('id')
     let userId = this.post('userId');
 
-    if (think.isEmpty(id) || think.isEmpty(userId)) {
-      return this.fail(1, 'invalid param');
-    }
     let param = {
       userId: userId,
       id: id,
@@ -102,9 +110,6 @@ module.exports = class extends Base {
     let id = this.post('id')
     let userId = this.post('userId');
 
-    if (think.isEmpty(id) || think.isEmpty(userId)) {
-      return this.fail(1, 'invalid param');
-    }
     let param = {
       userId: userId,
       id: id,

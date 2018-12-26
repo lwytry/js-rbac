@@ -66,8 +66,14 @@ module.exports = class extends think.Service {
     let data =  await model.where(where).order('id DESC').page(page).countSelect();
     return data;
   }
-  async getInfo(id) {
-    let info = await model.where({id: id}).find();
+  async getInfo(param) {
+    let where = {
+      id: param.id,
+    }
+    if (!think.isEmpty(param.userId)) {
+      where.userId = param.userId;
+    }
+    let info = await model.where(where).find();
     return info;
   }
   async update(param) {
