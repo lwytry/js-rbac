@@ -1,3 +1,3 @@
 module.exports = [
-  [/permission\/(.*)/i, '/:1', 'get,post'],
+  [/permissionapi\/(.*)/i, '/:1', 'get,post'],
 ];
