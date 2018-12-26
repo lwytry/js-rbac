@@ -1,12 +1,12 @@
 module.exports = class extends think.Controller {
   constructor(ctx) {
     super(ctx);
-    ctx.ProjectId = this.getProjectId();
+    ctx.ProjectId = this.getProjectId(ctx);
   }
   __before() {
   }
-  async getProjectId() {
-    let projectRequestId = this.param('projectRequestId');
+  async getProjectId(ctx) {
+    let projectRequestId = ctx.param('projectRequestId');
     let projectId = await this.cache(projectRequestId, undefined, 'redis');
 
     if (think.isEmpty(projectId)) {
