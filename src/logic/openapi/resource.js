@@ -4,7 +4,7 @@ module.exports = class extends think.Logic {
   // 获取项目下所有资源并呈现树状接口
   async getSourceTreeAction() {
     let rules = {
-      projectId: {
+      projectRequestId: {
         required: true, // 字段必填
         int: true,
       },
