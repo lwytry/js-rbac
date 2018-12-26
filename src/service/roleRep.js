@@ -53,7 +53,9 @@ module.exports = class extends think.Service {
     }
     let where = 'deleted != 1';
     where = where + ' and projectId=' + param.projectId;
-
+    if (!think.isEmpty(param.name)) {
+      where = where + ' and name like', '%' + param.name +'%';
+    }
     if (!think.isEmpty(param.userId)) {
       where = where + ' and (userId = 0 OR userId = ' + param.userId + ')';
     } else {
