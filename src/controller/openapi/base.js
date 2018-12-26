@@ -6,7 +6,7 @@ module.exports = class extends think.Controller {
   __before() {
   }
   async getProjectId() {
-    let projectRequestId = this.get('projectRequestId');
+    let projectRequestId = this.param('projectRequestId');
     let projectId = await this.cache(projectRequestId, undefined, 'redis');
 
     if (think.isEmpty(projectId)) {
