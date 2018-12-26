@@ -63,7 +63,7 @@ module.exports = class extends think.Service {
       where = where + ' and userId=0';
     }
     console.log(page);
-    let data =  await model.where(where).field('id, userId, status, createdAt, updatedAt, description').order('id DESC').page(page).countSelect();
+    let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').page(page).countSelect();
     return data;
   }
   async getInfo(param) {
