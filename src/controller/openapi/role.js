@@ -50,4 +50,20 @@ module.exports = class extends Base {
     return this.success(result);
   }
 
+  async getListAction() {
+    let projectId = await this.ctx.ProjectId;
+
+    let page = think.isEmpty(this.get('page')) ? 1 : this.get('page');
+    let num = think.isEmpty(this.get('num')) ? 10 : this.get('num');
+    const param = {
+      page: page,
+      num: num,
+      userId: this.get('userId'),
+      name: this.get('name'),
+      projectId: projectId,
+    }
+    let list = await roleRep.getList(param);
+    return this.success(list);
+  }
+
 };
