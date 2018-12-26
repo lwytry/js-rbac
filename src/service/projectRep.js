@@ -20,10 +20,10 @@ module.exports = class extends think.Service {
     return projectId;
   }
   async getList(param) {
-    const page = {
-      page: param.page,
-      num: param.num,
-    }
+    const page = [
+      param.page,
+      param.num,
+    ]
     let where = {
       deleted: ['!=', 1],
     }
@@ -66,10 +66,10 @@ module.exports = class extends think.Service {
 
   async getProjectList(param) {
     let model = think.model('project');
-    const page = {
-      page: param.page,
-      num: param.num,
-    }
+    const page = [
+      param.page,
+      param.num,
+    ]
     let where = {
       deleted: ['!=', 1],
     }

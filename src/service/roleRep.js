@@ -28,10 +28,10 @@ module.exports = class extends think.Service {
   }
   async getList(param) {
     let model = think.model('role');
-    const page = {
-      page: param.page,
-      num: param.num,
-    }
+    const page = [
+      param.page,
+      param.num,
+    ]
     let where = {}
     where['permission_role.deleted'] = ['!=', 1];
     where['permission_role.userId'] = 0;
@@ -47,20 +47,22 @@ module.exports = class extends think.Service {
   }
   async getListByUserId(param) {
     let model = think.model('role');
-    const page = {
-      page: param.page,
-      num: param.num,
-    }
+    const page = [
+      param.page,
+      param.num,
+    ]
+
     let where = 'deleted != 1';
     where = where + ' and projectId=' + param.projectId;
     if (!think.isEmpty(param.name)) {
-      where = where + ' and name like', '%' + param.name +'%';
+      where = where + ' and name like "%' + param.name +'%"';
     }
     if (!think.isEmpty(param.userId)) {
       where = where + ' and (userId = 0 OR userId = ' + param.userId + ')';
     } else {
       where = where + ' and userId=0';
     }
+    console.log(page);
     let data =  await model.where(where).order('id DESC').page(page).countSelect();
     return data;
   }

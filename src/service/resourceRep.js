@@ -34,10 +34,10 @@ module.exports = class extends think.Service {
     return insertId;
   }
   async getList(param) {
-    const page = {
-      page: param.page,
-      num: param.num,
-    }
+    const page = [
+      param.page,
+      param.num,
+    ]
     let where = {}
     where['permission_resource.deleted'] = ['!=', 1];
     if (!think.isEmpty(param.name)) {
@@ -95,10 +95,10 @@ module.exports = class extends think.Service {
   }
   // 获取父资源
   async getPresource(param) {
-    let page = {
-      page: 1,
-      num: 10
-    }
+    let page = [
+      1,
+      10
+    ]
     let where = {
       deleted: ['!=', 1],
     }
