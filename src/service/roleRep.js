@@ -9,12 +9,16 @@ module.exports = class extends think.Service {
     if (!think.isEmpty(info)) {
       return 0;
     }
+
     let data = {
       name: param.name,
       projectId: param.projectId,
       description: param.description,
       createdAt: param.createdAt,
       updatedAt: param.updatedAt,
+    }
+    if (!think.isEmpty(param.userId)) {
+      data.userId = param.userId;
     }
     let projectId = await model.add(data);
     return projectId;
