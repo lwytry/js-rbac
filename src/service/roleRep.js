@@ -86,11 +86,19 @@ module.exports = class extends think.Service {
     if (!think.isEmpty(param.userId)) {
       where.userId = param.userId;
     }
-    if (!think.isEmpty(param.name)) {
-      where.name = param.name;
-    }
+
     let info = await model.where(where).find();
     if (think.isEmpty(info)) {
+      return 0;
+    }
+
+    // 查看名称是否重复
+    let repeatWhere = {
+      userId: param.userId,
+      name: name,
+    }
+    let repeatInfo = await model.where(repeatWhere).find();
+    if (!think.isEmpty(repeatInfo) && repeatInfo.id != id) {
       return 0;
     }
 
