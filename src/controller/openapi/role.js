@@ -79,7 +79,10 @@ module.exports = class extends Base {
     }
     let result = await roleRep.update(param);
     if (result == 0) {
-      return this.fail(2, "名称不能重复或资源不存在")
+      return this.fail(2, "名称不能重复或资源不存在");
+    }
+    if (result == -1) {
+      return this.fail(2, "系统默认角色不允许修改");
     }
     return this.success(result)
   }

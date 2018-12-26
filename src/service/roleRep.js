@@ -91,7 +91,9 @@ module.exports = class extends think.Service {
     if (think.isEmpty(info)) {
       return 0;
     }
-
+    if (info.userId == 0) {
+      return -1;
+    }
     // 查看名称是否重复
     let repeatWhere = {
       userId: param.userId,
