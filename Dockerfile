@@ -2,7 +2,7 @@ FROM mhart/alpine-node:8.9.4
 
 WORKDIR /permission
 COPY package.json /permission/package.json
-RUN npm i --production --registry=https://registry.npm.taobao.org
+RUN npm i --registry=https://registry.npm.taobao.org
 
 COPY src /permission/src
 COPY view /permission/view
