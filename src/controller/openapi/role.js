@@ -121,4 +121,14 @@ module.exports = class extends Base {
     return this.success(result);
   }
 
+  // 获取公共角色
+  async getPublic () {
+    let projectIld = await this.ctx.ProjectId;
+    let param = {
+      ProjectId: ProjectId,
+    }
+    let result = await roleRep.getpublic(param);
+    return this.success(result);
+  }
+
 };

@@ -46,33 +46,36 @@ module.exports = class extends think.Service {
     return data;
   }
   async getListByUserId(param) {
-    let model = think.model('role');
     const page = [
       param.page,
       param.num,
     ]
+    let where = {};
+    where['deleted'] = ['!=', 1];
+    where['projectId'] = param.projectId;
+    where['userId'] = param.userId;
 
-    let where = 'deleted != 1';
-    where = where + ' and projectId=' + param.projectId;
     if (!think.isEmpty(param.name)) {
-      where = where + ' and name like "%' + param.name +'%"';
+      where['name'] = ['like', '%' + param.name +'%'];
     }
-    if (!think.isEmpty(param.userId)) {
-      where = where + ' and (userId = 0 OR userId = ' + param.userId + ')';
-    } else {
-      where = where + ' and userId=0';
-    }
-    console.log(page);
     let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').page(page).countSelect();
+    return data;
+  }
+  async getPublic() {
+    let where = {};
+    where['deleted'] = ['!=', 1];
+    where['projectId'] = param.projectId;
+    where['userId'] = 0;
+    let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').countSelect();
     return data;
   }
   async getInfo(param) {
     let where = {
       id: param.id,
     }
-    // if (!think.isEmpty(param.userId)) {
-    //   where.userId = param.userId;
-    // }
+    if (!think.isEmpty(param.userId)) {
+      where.userId = param.userId;
+    }
     let info = await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').find();
     return info;
   }
