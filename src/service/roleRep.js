@@ -61,10 +61,10 @@ module.exports = class extends think.Service {
     let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').page(page).countSelect();
     return data;
   }
-  async getPublic() {
+  async getPublic(param) {
     let where = {};
     where['deleted'] = ['!=', 1];
-    where['projectId'] = param.projectId;
+    where['projectId'] = param.projectIld;
     where['userId'] = 0;
     let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').countSelect();
     return data;
