@@ -131,4 +131,22 @@ module.exports = class extends Base {
     return this.success(result);
   }
 
+  // 同步公共角色和资源
+  async synchroRoleSourceAction() {
+    let projectIld = await this.ctx.ProjectId;
+    let roleId = this.get('roleId');
+    let param = {
+      projectIld: projectIld,
+      roleId: roleId,
+    }
+    let result = await roleRep.synchroRoleSource(param);
+    if (result == 0) {
+      return this.fail(1, "资源不存在");
+    }
+    if (result == -1) {
+      return this.fail(2, "请配置资源");
+    }
+    return this.success(result);
+  }
+
 };

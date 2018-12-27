@@ -186,4 +186,26 @@ module.exports = class extends think.Service {
     return subSrray;
   }
 
+  async synchroRoleSource(param) {
+    let roleId = param.roleId;
+    let projectId = param.projectId;
+    let info = await model.where({id: roleId, projectId: projectId}).find();
+    if (think.isEmpty(info)) {
+      return 0;
+    }
+    const roleSourceModel = ('role_resource');
+    let roleResources = roleSourceModel.where({roleId: roleId}).select();
+    if (think.isEmpty(roleResources)) {
+      return -1;
+    }
+
+    let insertData = []
+    for (var index in roleResources) {
+      insertData.push({roleId: roleId, resourceId: roleResources[index][resourceId]});
+    }
+
+    let insertIds = await model.addMany(insertData);
+    return insertIds;
+  }
+
 }
