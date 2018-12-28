@@ -198,7 +198,7 @@ module.exports = class extends think.Service {
       return 0;
     }
 
-    let roleSourceModel = model('role_resource');
+    let roleSourceModel = think.model('role_resource');
     let roleResources = roleSourceModel.where({roleId: roleId}).select();
     if (think.isEmpty(roleResources)) {
       return -1;
@@ -218,7 +218,7 @@ module.exports = class extends think.Service {
       for (var index in roleResources) {
         insertData.push({roleId: insertId, resourceId: roleResources[index][resourceId]});
       }
-      let roleSourceModel = this.model('role_resource').db(this.db());
+      let roleSourceModel = think.model('role_resource').db(this.db());
       var insertIds = await roleSourceModel.addMany(insertData);
       await this.commit();
     } catch (e) {
