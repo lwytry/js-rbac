@@ -61,7 +61,7 @@ module.exports = class extends think.Service {
     if (!think.isEmpty(param.name)) {
       where['name'] = ['like', '%' + param.name +'%'];
     }
-    let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').page(page).countSelect();
+    let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description, type').order('id DESC').page(page).countSelect();
     return data;
   }
   async getPublic(param) {
