@@ -176,4 +176,36 @@ module.exports = class extends think.Logic {
       return this.fail(1 , this.validateErrors);
     }
   }
+  getPublicAction() {
+    let rules = {
+      projectRequestId: {
+        string: true,       // 字段类型为 String 类型
+        required: true,     // 字段必填
+      }
+    }
+    let flag = this.validate(rules);
+    if(!flag){
+      return this.fail(1 , this.validateErrors);
+    }
+  }
+  synchroRoleSourceAction() {
+    let rules = {
+      roleId: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      userId: {
+        int: true,       // 字段类型为 String 类型
+        required: true,
+      },
+      projectRequestId: {
+        string: true,       // 字段类型为 String 类型
+        required: true,     // 字段必填
+      }
+    }
+    let flag = this.validate(rules);
+    if(!flag){
+      return this.fail(1 , this.validateErrors);
+    }
+  }
 }
