@@ -133,12 +133,12 @@ module.exports = class extends Base {
 
   // 同步公共角色和资源
   async synchroRoleSourceAction() {
-    let projectIld = await this.ctx.ProjectId;
+    let projectId = await this.ctx.ProjectId;
     let createdAt = this.getDate();
     let roleId = this.get('roleId');
     let userId = this.get('userId');
     let param = {
-      projectIld: projectIld,
+      projectId: projectId,
       roleId: roleId,
       userId: userId,
       createdAt: createdAt,
