@@ -186,25 +186,46 @@ module.exports = class extends think.Service {
     return subSrray;
   }
 
+  // 同步角色
   async synchroRoleSource(param) {
     let roleId = param.roleId;
     let projectId = param.projectId;
+    let userId = param.userId;
+    let createdAt = param.createdAt;
+    let updatedAt = param.updatedAt;
     let info = await model.where({id: roleId, projectId: projectId}).find();
     if (think.isEmpty(info)) {
       return 0;
     }
-    const roleSourceModel = ('role_resource');
+
+    let roleSourceModel = ('role_resource');
     let roleResources = roleSourceModel.where({roleId: roleId}).select();
     if (think.isEmpty(roleResources)) {
       return -1;
     }
+    await this.startTrans();
+    try {
+      let insertId = await model.add({
+        name: info.name,
+        destination: info.destination,
+        projectId: projectId,
+        userId: userId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      });
 
-    let insertData = []
-    for (var index in roleResources) {
-      insertData.push({roleId: roleId, resourceId: roleResources[index][resourceId]});
+      let insertData = []
+      for (var index in roleResources) {
+        insertData.push({roleId: insertId, resourceId: roleResources[index][resourceId]});
+      }
+      let roleSourceModel = this.model('role_resource').db(this.db());
+      var insertIds = await roleSourceModel.addMany(insertData);
+      await this.commit();
+    } catch (e) {
+      await this.rollback();
+      return 0;
     }
 
-    let insertIds = await model.addMany(insertData);
     return insertIds;
   }
 
