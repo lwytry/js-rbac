@@ -207,7 +207,7 @@ module.exports = class extends think.Service {
 
     await model.startTrans();
     try {
-      let insertId = await model.add({
+      var insertId = await model.add({
         name: info.name,
         description: info.description,
         projectId: projectId,
@@ -221,14 +221,14 @@ module.exports = class extends think.Service {
         insertData.push({roleId: insertId, resourceId: roleResources[index].resourceId});
       }
       let roleSourceModel = think.model('role_resource').db(model.db());
-      var insertIds = await roleSourceModel.addMany(insertData);
+      await roleSourceModel.addMany(insertData);
       await model.commit();
     } catch (e) {
       await model.rollback();
       return 0;
     }
 
-    return insertIds;
+    return insertId;
   }
 
 }
