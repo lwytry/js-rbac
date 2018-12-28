@@ -53,6 +53,9 @@ module.exports = class extends think.Logic {
         int: true,       // 字段类型为 String 类型
         required: true,     // 字段必填
       },
+      type: {
+        int: true,       // 字段类型为 String 类型
+      },
       name: {
         string: true,       // 字段类型为 String 类型
         required: true,     // 字段必填
@@ -101,6 +104,9 @@ module.exports = class extends think.Logic {
       projectRequestId: {
         string: true,       // 字段类型为 String 类型
         required: true,     // 字段必填
+      },
+      type: {
+        int: true,       // 字段类型为 String 类型
       },
       name: {
         string: true,       // 字段类型为 String 类型

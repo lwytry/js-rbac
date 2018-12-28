@@ -23,6 +23,9 @@ module.exports = class extends think.Service {
     if (!think.isEmpty(param.userId)) {
       data.userId = param.userId;
     }
+    if (!think.isEmpty(param.type)) {
+      data.type = param.type;
+    }
     let projectId = await model.add(data);
     return projectId;
   }
@@ -110,6 +113,9 @@ module.exports = class extends think.Service {
     const data = {
       name: name,
       description: description,
+    }
+    if (!think.isEmpty(param.type)) {
+      data.type = param.type;
     }
     let ret = await model.where({id: id}).update(data);
     return ret;

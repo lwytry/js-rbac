@@ -37,6 +37,7 @@ module.exports = class extends Base {
     let createdAt = this.getDate();
     const param = {
       name: this.post('name'),
+      type: this.post('type'),
       projectId: projectId,
       userId: this.post('userId'),
       description: this.post('description'),
@@ -67,15 +68,12 @@ module.exports = class extends Base {
   }
 
   async updateAction() {
-    let name = this.post('name');
-    let id = this.post('id');
-    let userId = this.post('userId');
-    let description = this.post('description');
     const param = {
-      id: id,
-      name: name,
-      userId: userId,
-      description: description,
+      id: this.post('id'),
+      name: this.post('name'),
+      type: this.post('type'),
+      userId: this.post('userId'),
+      description: this.post('description'),
     }
     let result = await roleRep.update(param);
     if (result == 0) {
