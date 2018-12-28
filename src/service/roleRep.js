@@ -198,7 +198,7 @@ module.exports = class extends think.Service {
       return 0;
     }
 
-    let roleSourceModel = ('role_resource');
+    let roleSourceModel = model('role_resource');
     let roleResources = roleSourceModel.where({roleId: roleId}).select();
     if (think.isEmpty(roleResources)) {
       return -1;
