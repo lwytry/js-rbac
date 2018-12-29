@@ -181,6 +181,30 @@ module.exports = class extends think.Service {
     return this.getTree(ret,0);
   }
 
+  // 获取角色相关资源
+  async getRoleSourceApi(param) {
+    let ret = await model.query(`SELECT
+    	DISTINCT b.resourceId,
+    	c.id,
+    	c.pId,
+    	c.label
+    	c.requestId
+    	c.icon
+    	c.addr
+    	c.type
+    	c.display
+    FROM
+    	permission_role AS a
+    	LEFT JOIN permission_role_resource AS b ON a.id = b.roleId
+    	LEFT JOIN permission_resource AS c ON c.id = b.resourceId 
+    WHERE
+    	a.id IN ( ` + param.roleIds + ` ) and status = 1 and c.id is NOT NULL`);
+    if (think.isEmpty(param.isTree)) {
+      return ret;
+    }
+    return this.getTree(ret,0);
+  }
+
   getTree(listArray, id){
     const subSrray = [];
     for(let index in listArray){

@@ -9,7 +9,7 @@ module.exports = class extends Base {
       roleIds: this.get('roleIds'),
       isTree: this.get('isTree')
     }
-    let result = await roleRep.getRoleSource(param);
+    let result = await roleRep.getRoleSourceApi(param);
     if (result == 0 && (!typeof result == 'object')) {
       return this.fail(1001, "获取失败")
     }
