@@ -198,7 +198,7 @@ module.exports = class extends think.Service {
     	LEFT JOIN permission_role_resource AS b ON a.id = b.roleId
     	LEFT JOIN permission_resource AS c ON c.id = b.resourceId 
     WHERE
-    	a.id IN ( ` + param.roleIds + ` ) and status = 1 and c.id is NOT NULL`);
+    	a.id IN ( ` + param.roleIds + ` ) and c.status = 1 and c.id is NOT NULL`);
     if (think.isEmpty(param.isTree)) {
       return ret;
     }
