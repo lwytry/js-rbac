@@ -187,11 +187,11 @@ module.exports = class extends think.Service {
     	DISTINCT b.resourceId,
     	c.id,
     	c.pId,
-    	c.label
-    	c.requestId
-    	c.icon
-    	c.addr
-    	c.type
+    	c.label,
+    	c.requestId,
+    	c.icon,
+    	c.addr,
+    	c.type,
     	c.display
     FROM
     	permission_role AS a
