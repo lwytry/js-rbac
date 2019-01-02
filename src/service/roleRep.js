@@ -89,15 +89,16 @@ module.exports = class extends think.Service {
     const where = {
       id: id,
     }
+    let userId = 0;
     if (!think.isEmpty(param.userId)) {
-      where.userId = param.userId;
+      userId = param.userId;
     }
 
     let info = await model.where(where).find();
     if (think.isEmpty(info)) {
       return 0;
     }
-    if (info.userId == 0) {
+    if (info.userId == 0 && userId != 0) {
       return -1;
     }
     // 查看名称是否重复
