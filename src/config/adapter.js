@@ -42,7 +42,7 @@ exports.model = {
   },
   mysql: {
     handle: mysql,
-    database: 'gdy_permission',
+    database: 'gdy_public',
     prefix: 'permission_',
     encoding: 'utf8',
     host: '121.42.227.165',
