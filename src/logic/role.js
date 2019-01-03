@@ -20,15 +20,11 @@ module.exports = class extends think.Logic {
 
   setSourceAction() {
     let rules = {
-      requestId: {
-        string: true,       // 字段类型为 String 类型
-        required: true,     // 字段必填
-      },
       roleId: {
         int: true,       // 字段类型为 String 类型
         required: true,     // 字段必填
       },
-      userId: {
+      resourceIds: {
         int: true,       // 字段类型为 String 类型
         required: true,     // 字段必填
       },
