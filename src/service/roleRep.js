@@ -153,7 +153,9 @@ module.exports = class extends think.Service {
         return 0;
       }
     }
-
+    if (think.isEmpty(param.resourceIds)) {
+      return 1;
+    }
     let insertData = []
     for (var index in param.resourceIds) {
       insertData.push({'roleId': param.roleId, 'resourceId': param.resourceIds[index]});
