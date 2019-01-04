@@ -58,13 +58,14 @@ module.exports = class extends Base {
   async updateAction() {
     let name = this.post('name');
     let id = this.post('id');
-    let pId = this.post('pId');
     let label = this.post('label');
     let icon = this.post('icon');
     let addr = this.post('addr');
     let type = this.post('type');
     let sort = this.post('sort');
     let display = this.post('display');
+    let pId = think.isEmpty(this.post('pId')) ? 0 : this.post('pId');
+
     const param = {
       name: name,
       pId: pId,
@@ -75,6 +76,9 @@ module.exports = class extends Base {
       type: type,
       sort: sort,
       display: display,
+    }
+    if (id == pId) {
+      return this.fail(1, '父资源不能添加本身');
     }
     let result = await ResourceRep.update(param);
     if (result == 0) {
