@@ -127,7 +127,7 @@ module.exports = class extends think.Service {
       status: 1,
       pId: 0,
     }
-    const result = await model.where(where).field('id, pId, label, sort').order('sort asc, id asc').select();
+    const result = await model.where(where).field('id, pId, requestId, lable, label, icon, addr, type, display, sort').order('sort asc, id asc').select();
 
     var sourceTree = async function getChild(result) {
       for (var index in result) {
