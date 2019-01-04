@@ -11,8 +11,8 @@ module.exports = class extends Base {
     let addr = this.post('addr');
     let type = this.post('type');
     let projectId = this.post('projectId');
-    let sort = think.isEmpty(this.post('sort')) ? this.post('sort') : 0;
-    let display = think.isEmpty(this.post('display')) ? this.post('display') : 0;
+    let sort = think.isEmpty(this.post('sort')) ? 0 : this.post('sort');
+    let display = think.isEmpty(this.post('display')) ? 0 : this.post('display');
 
     const param = {
       name: name,
