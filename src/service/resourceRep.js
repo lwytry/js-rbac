@@ -96,8 +96,8 @@ module.exports = class extends think.Service {
   // 获取父资源
   async getPresource(param) {
     let page = [
-      1,
-      10
+      param.page,
+      param.num,
     ]
     let where = {
       deleted: ['!=', 1],

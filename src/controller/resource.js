@@ -99,12 +99,16 @@ module.exports = class extends Base {
     return this.success(result);
   }
   async getParentResourceAction() {
-    const where = {
+    let page = think.isEmpty(this.get('page')) ? 1 : this.get('page');
+    let num = think.isEmpty(this.get('num')) ? 10 : this.get('num');
+    const param = {
+      page: page,
+      num: num,
       projectId: this.get('projectId'),
       name: this.get('name')
     }
 
-    let result = await ResourceRep.getPresource(where);
+    let result = await ResourceRep.getPresource(param);
     return this.success(result)
   }
 
