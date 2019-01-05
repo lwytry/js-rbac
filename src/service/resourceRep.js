@@ -135,7 +135,7 @@ module.exports = class extends think.Service {
           deleted: ['!=', 1],
           status: 1,
           pId: result[index].id,
-        }).field('id, pId, label, sort').order('sort asc, id asc').select();
+        }).field('id, pId, requestId, label, icon, addr, type, display, sort').order('sort asc, id asc').select();
         result[index].children = ret;
         if (!think.isEmpty(ret)) {
           result[index].children = await getChild(result[index].children)
