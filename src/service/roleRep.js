@@ -115,7 +115,7 @@ module.exports = class extends think.Service {
       name: name,
       description: description,
     }
-    if (!think.isEmpty(param.type)) {
+    if (!think.isEmpty(param.type || param.type == 0)) {
       data.type = param.type;
     }
     let ret = await model.where({id: id}).update(data);
