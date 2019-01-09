@@ -69,7 +69,7 @@ module.exports = class extends think.Service {
     where['deleted'] = ['!=', 1];
     where['projectId'] = param.projectIld;
     where['userId'] = 0;
-    let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').order('id DESC').countSelect();
+    let data =  await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description, type').order('id DESC').countSelect();
     return data;
   }
   async getInfo(param) {
@@ -79,7 +79,7 @@ module.exports = class extends think.Service {
     if (!think.isEmpty(param.userId)) {
       where.userId = param.userId;
     }
-    let info = await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description').find();
+    let info = await model.where(where).field('id, name, userId, status, createdAt, updatedAt, description, type').find();
     return info;
   }
   async update(param) {
