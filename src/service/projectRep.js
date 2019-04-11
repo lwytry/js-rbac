@@ -16,8 +16,25 @@ module.exports = class extends think.Service {
       createdAt: param.createdAt,
       updatedAt: param.updatedAt,
     }
-    let projectId = await think.model('project').add(data);
-    return projectId;
+    let insertId = await think.model('project').add(data);
+    return insertId;
+  }
+  async craeteReqId(param) {
+    while (true) {
+      var requestId = uuidv1();
+      let info = await model.where({requestId: requestId}).find();
+      if (think.isEmpty(info)) {
+        break;
+      }
+    }
+    let data = {
+      name: param.name,
+      requestId: requestId,
+      createdAt: param.createdAt,
+      updatedAt: param.updatedAt,
+    }
+    let insertId = await think.model('project').add(data);
+    return {requestId, insertId};
   }
   async getList(param) {
     const page = [
@@ -76,7 +93,6 @@ module.exports = class extends think.Service {
     if (!think.isEmpty(param.name)) {
       where.name = ['like', '%' + param.name +'%'];
     }
-    console.log(where)
     let data =  await model.where(where).order('id DESC').page(page).select();
     return data;
   }

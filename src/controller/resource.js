@@ -64,6 +64,7 @@ module.exports = class extends Base {
     let type = this.post('type');
     let sort = this.post('sort');
     let display = this.post('display');
+    let projectId = this.post('projectId');
     let pId = think.isEmpty(this.post('pId')) ? 0 : this.post('pId');
 
     const param = {
@@ -76,6 +77,7 @@ module.exports = class extends Base {
       type: type,
       sort: sort,
       display: display,
+      projectId: projectId,
     }
     if (id == pId) {
       return this.fail(1, '父资源不能添加本身');
