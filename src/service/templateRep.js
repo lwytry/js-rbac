@@ -66,19 +66,17 @@ module.exports = class extends think.Service {
   }
 
 
-  // 获取角色相关资源
+  // 获取模板相关资源
   async getTemplateSource(param) {
     let ret = await model.query(`SELECT
-    	DISTINCT b.resourceId,
     	c.id,
     	c.pId,
     	c.label
     FROM
     	permission_template AS a
-    	LEFT JOIN permission_template_resource AS b ON a.id = b.tId
-    	LEFT JOIN permission_resource AS c ON c.id = b.resourceId 
+    	LEFT JOIN permission_tresource AS c ON a.id = c.tId 
     WHERE
-    	a.id IN ( ` + param.roleIds + ` ) and c.id is NOT NULL`);
+    	a.id IN ( ` + param.tIds + ` ) and c.id is NOT NULL`);
     if (think.isEmpty(param.isTree)) {
       return ret;
     }
@@ -102,22 +100,19 @@ module.exports = class extends think.Service {
     let projectId = param.projectId;
     let createdAt = param.createdAt;
     let updatedAt = param.updatedAt;
-    let templateSourceModel = think.model('template_resource');
-    let templateResources = await templateSourceModel.where({tId: tId}).select();
+    let templateSourceModel = think.model('tresource');
+    let templateResources = await templateSourceModel.where({tId: tId, status: 1}).order('pId ASC').select();
     if (think.isEmpty(templateResources)) {
       return -1;
     }
     await model.startTrans();
     try {
-
+      let pIds = {};
       for (var index in templateResources) {
-        let requestId = getRequestId(projectId);
-        console.log(requestId)
+        let insertPIdsFlag = 0;
         let insertData = {
           projectId: projectId,
           name: templateResources[index].name,
-          requestId : requestId,
-          pId: templateResources[index].pId,
           label: templateResources[index].label,
           icon: templateResources[index].icon,
           addr: templateResources[index].addr,
@@ -127,13 +122,34 @@ module.exports = class extends think.Service {
           createdAt: createdAt,
           updatedAt: updatedAt
         };
-        console.log(insertData)
+        if (templateResources[index].pId == 0) {
+          insertData.pId == 0;
+          insertPIdsFlag = 1;
+        } else {
+          insertData.pId = pIds[templateResources[index].pId]
+          if (think.isEmpty(insertData.pId)) {
+            continue;
+          }
+        }
         let roleSourceModel = think.model('resource').db(model.db());
+        let requestId = "";
+        while (true) {
+          requestId = uuidv1();
+          let info = await roleSourceModel.where({requestId: requestId, projectId: projectId}).find();
+          if (think.isEmpty(info)) {
+            break;
+          }
+        }
+        insertData["requestId"] = requestId;
         let insertId = await roleSourceModel.add(insertData);
-        console.log(insertId)
+
         if (insertId <=0) {
           await model.rollback();
           break;
+        }
+
+        if (insertPIdsFlag == 1) {
+          pIds[templateResources[index].id] = insertId;
         }
       }
 
@@ -144,6 +160,17 @@ module.exports = class extends think.Service {
     }
 
     return 1;
+  }
+
+  async getRequestId(projectId) {
+    let model = think.model('resource').db(model.db());
+    while (true) {
+      var requestId = uuidv1();
+      let info = await model.where({requestId: requestId, projectId: projectId}).find();
+      if (think.isEmpty(info)) {
+        return requestId;
+      }
+    }
   }
 
 }

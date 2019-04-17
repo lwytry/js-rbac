@@ -149,4 +149,28 @@ module.exports = class extends think.Service {
     return sourceTree;
   }
 
+  async getSourceAll(projectId) {
+    let where = {
+      projectId: projectId,
+      deleted: ['!=', 1],
+      pId: 0,
+    }
+    const result = await model.where(where).field('id, pId, requestId, label, icon, addr, type, display, sort').order('sort asc, id asc').select();
+
+    var sourceTree = async function getChild(result) {
+      for (var index in result) {
+        let ret = await model.where({
+          deleted: ['!=', 1],
+          pId: result[index].id,
+        }).field('id, pId, requestId, label, icon, addr, type, display, sort').order('sort asc, id asc').select();
+        result[index].children = ret;
+        if (!think.isEmpty(ret)) {
+          result[index].children = await getChild(result[index].children)
+        }
+      }
+      return result;
+    }(result)
+    return sourceTree;
+  }
+
 }

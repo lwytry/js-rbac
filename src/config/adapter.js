@@ -45,7 +45,7 @@ exports.model = {
     database: 'gdy_public',
     prefix: 'permission_',
     encoding: 'utf8',
-    host: '121.42.227.165',
+    host: 'rm-bp1e1kl9r733m59de.mysql.rds.aliyuncs.com',
     port: '3306',
     user: 'kkyoo',
     password: 'kkyoo_aodian_2011_06_11',

@@ -1,5 +1,5 @@
 const Base = require('./base.js');
-const ResourceRep = think.service('resourceRep');
+const TResourceRep = think.service('tresourceRep');
 
 module.exports = class extends Base {
   async addAction() {
@@ -10,12 +10,10 @@ module.exports = class extends Base {
     let icon = think.isEmpty(this.post('icon')) ? '' : this.post('icon') ;
     let addr = this.post('addr');
     let type = this.post('type');
-    let projectId = await this.ctx.ProjectId;
+    let tId = this.post('tId');
     let sort = think.isEmpty(this.post('sort')) ? 0 : this.post('sort');
     let display = think.isEmpty(this.post('display')) ? 0 : this.post('display');
-    if (think.isEmpty(projectId)) {
-      return this.fail(1, 'projectRequestId Can not be empty');
-    }
+
     const param = {
       name: name,
       pId: pId,
@@ -24,13 +22,13 @@ module.exports = class extends Base {
       addr: addr,
       type: type,
       sort: sort,
-      projectId: projectId,
+      tId: tId,
       display: display,
       craetedAt: createdAt,
       updatedAt: createdAt
     }
 
-    let result = await ResourceRep.craete(param);
+    let result = await TResourceRep.craete(param);
     if (result == 0) {
       return this.fail(1, '显示名称重复');
     }
@@ -39,18 +37,14 @@ module.exports = class extends Base {
   async getListAction() {
     let page = think.isEmpty(this.get('page')) ? 1 : this.get('page');
     let num = think.isEmpty(this.get('num')) ? 10 : this.get('num');
-    let projectId = await this.ctx.ProjectId;
-    if (think.isEmpty(projectId)) {
-      return this.fail(1, 'projectRequestId Can not be empty');
-    }
     const param = {
       page: page,
       num: num,
       name: this.get('name'),
       label: this.get('label'),
-      projectId: projectId,
+      tId: this.get('tId'),
     }
-    let list = await ResourceRep.getList(param);
+    let list = await TResourceRep.getList(param);
     return this.success(list);
   }
   async getInfoAction() {
@@ -58,7 +52,7 @@ module.exports = class extends Base {
     if (think.isEmpty(id)) {
       return this.fail(1, 'invalid param');
     }
-    let result = await ResourceRep.getInfo(id);
+    let result = await TResourceRep.getInfo(id);
     return this.success(result);
   }
   async updateAction() {
@@ -70,11 +64,9 @@ module.exports = class extends Base {
     let type = this.post('type');
     let sort = this.post('sort');
     let display = this.post('display');
-    let projectId = await this.ctx.ProjectId;
+    let tId = this.post('tId');
     let pId = think.isEmpty(this.post('pId')) ? 0 : this.post('pId');
-    if (think.isEmpty(projectId)) {
-      return this.fail(1, 'projectRequestId Can not be empty');
-    }
+
     const param = {
       name: name,
       pId: pId,
@@ -85,12 +77,13 @@ module.exports = class extends Base {
       type: type,
       sort: sort,
       display: display,
-      projectId: projectId,
+      tId: tId,
     }
+
     if (id == pId) {
       return this.fail(1, '父资源不能添加本身');
     }
-    let result = await ResourceRep.update(param);
+    let result = await TResourceRep.update(param);
     if (result == 0) {
       return this.fail(1, '显示名称重复');
     }
@@ -101,7 +94,7 @@ module.exports = class extends Base {
     if (think.isEmpty(id)) {
       return this.fail(1, 'invalid param');
     }
-    let result = await ResourceRep.disable(id);
+    let result = await TResourceRep.disable(id);
     return this.success(result);
   }
   async enableAction() {
@@ -109,45 +102,29 @@ module.exports = class extends Base {
     if (think.isEmpty(id)) {
       return this.fail(1, 'invalid param');
     }
-    let result = await ResourceRep.enable(id);
+    let result = await TResourceRep.enable(id);
     return this.success(result);
   }
 
   async getParentResourceAction() {
     let page = think.isEmpty(this.get('page')) ? 1 : this.get('page');
     let num = think.isEmpty(this.get('num')) ? 10 : this.get('num');
-    let projectId = await this.ctx.ProjectId;
-    if (think.isEmpty(projectId)) {
-      return this.fail(1, 'projectRequestId Can not be empty');
-    }
     const param = {
       page: page,
       num: num,
-      projectId: this.get('projectId'),
+      tId: this.get('tId'),
       name: this.get('name')
     }
 
-    let result = await ResourceRep.getPresource(param);
+    let result = await TResourceRep.getPresource(param);
     return this.success(result)
   }
 
   // 获取项目下所有资源并呈现树状接口
-  async getProjectSourceTreeAction() {
-    let projectId = await this.ctx.ProjectId;
-    if (think.isEmpty(projectId)) {
-      return this.fail(1, 'projectRequestId Can not be empty');
-    }
-    let result = await ResourceRep.getSourceTree(projectId);
-    return this.success(result)
-  }
+  async getSourceTreeAction() {
+    let tId =  this.get('tId'),
 
-  // 获取项目下所有资源
-  async getProjectAllSourceAction() {
-    let projectId = await this.ctx.ProjectId;
-    if (think.isEmpty(projectId)) {
-      return this.fail(1, 'projectRequestId Can not be empty');
-    }
-    let result = await ResourceRep.getSourceAll(projectId);
+    result = await TResourceRep.getSourceTree(tId);
     return this.success(result)
   }
 

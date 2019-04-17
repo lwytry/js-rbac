@@ -42,6 +42,7 @@ module.exports = class extends Base {
     };
     let result = await TemplateRep.synchroTemplateSource(data);
     if (result == 0) {
+      ProjectRep.delete(projectResult.insertId)
       return this.fail(1, "同步失败")
     }
     return this.success(projectResult.requestId);

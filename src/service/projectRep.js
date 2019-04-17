@@ -10,6 +10,10 @@ module.exports = class extends think.Service {
         break;
       }
     }
+    let info = await model.where({name: param.name}).find();
+    if (!think.isEmpty(info)) {
+      return 0;
+    }
     let data = {
       name: param.name,
       requestId: requestId,
@@ -26,6 +30,11 @@ module.exports = class extends think.Service {
       if (think.isEmpty(info)) {
         break;
       }
+    }
+    console.log(param.name)
+    let info = await model.where({name: param.name}).find();
+    if (!think.isEmpty(info)) {
+      return 0;
     }
     let data = {
       name: param.name,
@@ -78,6 +87,12 @@ module.exports = class extends think.Service {
   async enable(id) {
     let model = think.model('project');
     let info = await model.where({id: id}).update({status: 1});
+    return info;
+  }
+
+  async delete(id) {
+    let model = think.model('project');
+    let info = await model.where({id: id}).update({deleted: 1});
     return info;
   }
 
