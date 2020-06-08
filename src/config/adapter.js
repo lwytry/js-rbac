@@ -25,8 +25,8 @@ exports.cache = {
   redis: {
     handle: redisCache,
     port: 6379,
-    host: '121.42.227.165',
-    password: 'ZvZg2R8L8rbg9y'
+    host: '',
+    password: ''
   }
 };
 /**
@@ -42,13 +42,13 @@ exports.model = {
   },
   mysql: {
     handle: mysql,
-    database: 'gdy_public',
+    database: '',
     prefix: 'permission_',
     encoding: 'utf8',
-    host: 'rm-bp1e1kl9r733m59de.mysql.rds.aliyuncs.com',
+    host: '',
     port: '3306',
-    user: 'kkyoo',
-    password: 'kkyoo_aodian_2011_06_11',
+    user: '',
+    password: '',
     dateStrings: true,
     debounce: true // 关闭 debounce 功能
   }
